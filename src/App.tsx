@@ -5,20 +5,21 @@ import { Barcode } from './Barcode/Barcode';
 const App: React.FC<{}> = (): React.ReactElement => {
 
   const [inputBarcode, setInputBarcode] = React.useState<string>('');
-  const [barcode, setBarcode] = React.useState('');
+  const [barcode, setBarcode] = React.useState('Enter barcode');
   const [showBarcode, setShowBarcode] = React.useState(false);
 
-  const createBarcode = (event: React.FormEvent) => {
-    event.preventDefault();
+React.useEffect(() => {
+  if(inputBarcode === '') {
+    setBarcode('Enter barcode')
+  } else {
     setBarcode(inputBarcode)
-    setShowBarcode(true)
-  };
+  }
+},[inputBarcode]);
 
   return (
     <div className="App">
       <h1>Generate Your Barcode</h1>
       <div className="input-container">
-        <form onSubmit={createBarcode}>
           <input
             className='barcode-input'
             type='text'
@@ -29,11 +30,9 @@ const App: React.FC<{}> = (): React.ReactElement => {
             onChange={(e) => setInputBarcode(e.target.value)}
             required
           />
-          <button type="submit" className="standard-button">Create Barcode</button>
-        </form>
       </div>
       <div className="barcode-container">
-        {showBarcode && <Barcode barcode={barcode} />}
+        <Barcode barcode={barcode} />
       </div>
     </div>
   );
